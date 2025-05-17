@@ -38,12 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
     "Ammonia":          { "1_tbsp":10 }
   };
 
-  // 2) Element refs
-  const ingSel  = document.getElementById('ingredient');
-  const unitSel = document.getElementById('unit');
-  const volIn   = document.getElementById('volInput');
-  const wtIn    = document.getElementById('wtInput');
-  const result  = document.getElementById('result');
+  // 2) Element references
+  const ingSel   = document.getElementById('ingredient');
+  const unitSel  = document.getElementById('unit');
+  const volIn    = document.getElementById('volInput');
+  const wtIn     = document.getElementById('wtInput');
+  const volRes   = document.getElementById('volResult');
+  const wtRes    = document.getElementById('wtResult');
 
   // 3) Populate ingredient dropdown
   Object.keys(data).forEach(name => {
@@ -58,11 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const whole = Math.floor(x);
     const rem   = x - whole;
     const fracs = [
-      { val: .75, sym: '¾' },
+      { val: .75,   sym: '¾' },
       { val: .6667, sym: '⅔' },
-      { val: .5,   sym: '½' },
+      { val: .5,    sym: '½' },
       { val: .3333, sym: '⅓' },
-      { val: .25,  sym: '¼' }
+      { val: .25,   sym: '¼' }
     ];
     let match = fracs.find(f => Math.abs(rem - f.val) < 0.08);
     if (!match && rem < 0.08) match = { val: 0, sym: '' };
@@ -75,31 +76,46 @@ document.addEventListener('DOMContentLoaded', () => {
     return x.toFixed(2);
   }
 
-  // 5) Volume → Weight
+  // 5) Volume → Weight & display
   function updateFromVolume() {
     const perUnit = data[ingSel.value]?.[unitSel.value] || 0;
-    const vol     = parseFloat(volIn.value) || 0;
-    const grams   = (vol * perUnit).toFixed(2);
-    wtIn.value    = grams;
-    result.textContent = `${grams} g`;
+    const volNum  = parseFloat(volIn.value) || 0;
+    const grams   = (volNum * perUnit).toFixed(2);
+
+    // Format volume
+    const isCup = unitSel.value.includes('_cup');
+    const displayVol = isCup
+      ? toCupFraction(volNum)
+      : volNum.toFixed(2);
+
+    // Write results
+    volRes.textContent = `${displayVol} ${unitSel.selectedOptions[0].text}`;
+    wtRes.textContent  = `${grams} g`;
+
+    // Sync weight input
+    wtIn.value = grams;
   }
 
-  // 6) Weight → Volume
+  // 6) Weight → Volume & display
   function updateFromWeight() {
     const perUnit = data[ingSel.value]?.[unitSel.value] || 0;
-    const wt      = parseFloat(wtIn.value) || 0;
-    const rawVol  = perUnit ? wt / perUnit : 0;
-    let displayVol;
+    const wtNum   = parseFloat(wtIn.value) || 0;
+    const rawVol  = perUnit ? (wtNum / perUnit) : 0;
 
-    if (unitSel.value.includes('_cup')) {
-      displayVol = toCupFraction(rawVol);
-    } else {
-      displayVol = rawVol.toFixed(2);
-    }
+    // Format volume
+    const isCup = unitSel.value.includes('_cup');
+    const displayVol = isCup
+      ? toCupFraction(rawVol)
+      : rawVol.toFixed(2);
 
+    const grams = wtNum.toFixed(2);
+
+    // Write results
+    volRes.textContent = `${displayVol} ${unitSel.selectedOptions[0].text}`;
+    wtRes.textContent  = `${grams} g`;
+
+    // Sync volume input
     volIn.value = displayVol;
-    const unitText = unitSel.selectedOptions[0].text;
-    result.textContent = `${displayVol} ${unitText}`;
   }
 
   // 7) Event listeners
@@ -108,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
   volIn.addEventListener('input', updateFromVolume);
   wtIn.addEventListener('input', updateFromWeight);
 
-  // 8) Initialize
+  // 8) Initialize defaults
   ingSel.selectedIndex = 0;
   unitSel.value       = '1_cup';
   volIn.value         = 1;
