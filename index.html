@@ -14,16 +14,24 @@
       <label for="ingredient">Ingredient:</label>
       <select id="ingredient"></select>
 
-      <label for="cupInput">Volume (cups):</label>
-      <input type="number" id="cupInput" step="0.01" placeholder="e.g. 0.5" />
+      <label for="inputValue">Input:</label>
+      <input type="number" id="inputValue" step="0.01" />
+      <select id="inputUnit">
+        <option value="1_cup">cup</option>
+        <option value="1_tbsp">tbsp</option>
+        <option value="g">gram</option>
+      </select>
 
-      <label for="gramInput">Weight (grams):</label>
-      <input type="number" id="gramInput" step="0.1" placeholder="e.g. 100" />
+      <label for="outputUnit">Convert to:</label>
+      <select id="outputUnit">
+        <option value="1_cup">cup</option>
+        <option value="1_tbsp">tbsp</option>
+        <option value="g">gram</option>
+      </select>
     </div>
 
     <div class="result">
-      <p><strong>Converted Volume:</strong> <span id="cupResult">—</span></p>
-      <p><strong>Converted Weight:</strong> <span id="gramResult">—</span></p>
+      <p><strong>Result:</strong> <span id="result">—</span></p>
     </div>
   </div>
 
