@@ -1,4 +1,4 @@
-// data: ingredient → { unitKey: grams }
+// ingredient → { unitKey: grams per 1 unit }
 const data = {
   "Cake Flour":       { "1_cup":90,  "3_4_cup":67.5, "2_3_cup":60,  "1_2_cup":45,  "1_3_cup":30,   "1_4_cup":22.5, "1_tbsp":5.6 },
   "All-Purpose Flour":{ "1_cup":95,  "3_4_cup":71.3, "2_3_cup":63.3,"1_2_cup":47.5,"1_3_cup":31.6, "1_4_cup":23.8, "1_tbsp":5.9 },
@@ -36,27 +36,55 @@ const data = {
   "Ammonia":          { "1_tbsp":10 }
 };
 
-window.addEventListener('DOMContentLoaded', () => {
-  const ingSelect = document.getElementById('ingredient');
-  const unitSelect = document.getElementById('unit');
-  const out = document.getElementById('grams');
+document.addEventListener('DOMContentLoaded', () => {
+  const ingSel = document.getElementById('ingredient');
+  const unitSel = document.getElementById('unit');
+  const volIn  = document.getElementById('volInput');
+  const wtIn   = document.getElementById('wtInput');
+  const result = document.getElementById('result');
 
-  // populate ingredients dropdown
-  for (let name of Object.keys(data)) {
+  // populate ingredient dropdown
+  Object.keys(data).forEach(name => {
     let opt = document.createElement('option');
-    opt.value = name;
-    opt.textContent = name;
-    ingSelect.append(opt);
+    opt.value = name; opt.textContent = name;
+    ingSel.append(opt);
+  });
+
+  // update display when volume changes
+  function onVolumeChange() {
+    const ing = data[ingSel.value];
+    const perUnit = ing[unitSel.value] || 0;
+    const vol = parseFloat(volIn.value) || 0;
+    const grams = (vol * perUnit).toFixed(2);
+    result.textContent = `${grams} g`;
+    // avoid loop
+    wtIn.value = grams;
   }
 
-  function update() {
-    const ing = data[ingSelect.value];
-    const grams = ing[unitSelect.value] ?? '—';
-    out.textContent = grams;
+  // update display when weight changes
+  function onWeightChange() {
+    const ing = data[ingSel.value];
+    const perUnit = ing[unitSel.value] || 0;
+    const wt = parseFloat(wtIn.value) || 0;
+    const vol = perUnit > 0 ? (wt / perUnit).toFixed(2) : 0;
+    result.textContent = `${vol} ${unitSel.selectedOptions[0].text}`;
+    volIn.value = vol;
   }
 
-  ingSelect.addEventListener('change', update);
-  unitSelect.addEventListener('change', update);
+  // also recalc if ingredient or unit changes
+  ingSel.addEventListener('change', () => {
+    onVolumeChange();
+  });
+  unitSel.addEventListener('change', () => {
+    onVolumeChange();
+  });
 
-  update();
+  volIn.addEventListener('input', onVolumeChange);
+  wtIn.addEventListener('input', onWeightChange);
+
+  // initialize
+  ingSel.selectedIndex = 0;
+  unitSel.value = '1_cup';
+  volIn.value = 1;
+  onVolumeChange();
 });
