@@ -50,9 +50,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 5) Fraction helper for cup units
-  function toCupFraction(x) {
+    function toCupFraction(x) {
     const whole = Math.floor(x);
     const rem   = x - whole;
+
+    // Snap really-close values to whole numbers
+    if (rem > 0.9) {
+      return `${whole + 1}`;      // e.g. 0.92 → "1"
+    }
+    if (rem < 0.1) {
+      return `${whole}`;          // e.g. 1.03 → "1", 0.08 → "0"
+    }
+
     const fracs = [
       { val: .75,   sym: '¾' },
       { val: .6667, sym: '⅔' },
@@ -60,15 +69,19 @@ document.addEventListener('DOMContentLoaded', () => {
       { val: .3333, sym: '⅓' },
       { val: .25,   sym: '¼' }
     ];
-    let m = fracs.find(f => Math.abs(rem - f.val) < 0.08);
-    if (!m && rem < 0.08) m = { val: 0, sym: '' };
-    if (m) {
-      if (whole > 0 && m.sym)   return `${whole}${m.sym}`;
-      if (whole > 0 && !m.sym)  return `${whole}`;
-      if (whole === 0 && m.sym) return `${m.sym}`;
+
+    // find closest standard fraction
+    const match = fracs.find(f => Math.abs(rem - f.val) < 0.08);
+    if (match) {
+      const s = match.sym;
+      if (whole > 0) return `${whole}${s}`;  // e.g. 1 + "½" → "1½"
+      return `${s}`;                        // e.g. ⅓
     }
+
+    // fallback (unlikely now)
     return x.toFixed(2);
   }
+
 
   // 6) Volume → Weight
   function updateFromVolume() {
