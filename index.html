@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Ingredient Converter</title>
-  <!-- Cozy font from Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"/>
 </head>
-  <body>
+<body>
   <div class="container">
     <h1>Ingredient Converter</h1>
 
@@ -16,33 +14,17 @@
       <label for="ingredient">Ingredient:</label>
       <select id="ingredient"></select>
 
-      <label for="unit">Unit:</label>
-      <select id="unit">
-        <option value="1_cup">cup</option>
-        <option value="3_4_cup">¾ cup</option>
-        <option value="2_3_cup">⅔ cup</option>
-        <option value="1_2_cup">½ cup</option>
-        <option value="1_3_cup">⅓ cup</option>
-        <option value="1_4_cup">¼ cup</option>
-        <option value="1_tbsp">tbsp</option>
-      </select>
-    </div>
+      <label for="cupInput">Volume (cups):</label>
+      <input type="number" id="cupInput" step="0.01" placeholder="e.g. 0.5" />
 
-    <div class="inputs">
-      <div>
-        <label for="volInput">Volume:</label>
-        <input type="number" id="volInput" placeholder="e.g. 1.5" step="any" />
-      </div>
-      <div>
-        <label for="wtInput">Weight (g):</label>
-        <input type="number" id="wtInput" placeholder="e.g. 150" step="any" />
-      </div>
+      <label for="gramInput">Weight (grams):</label>
+      <input type="number" id="gramInput" step="0.1" placeholder="e.g. 100" />
     </div>
 
     <div class="result">
-      <div><strong>Volume:</strong> <span id="volResult">—</span></div>
-      <div><strong>Weight:</strong> <span id="wtResult">—</span></div>
-    </div>   
+      <p><strong>Converted Volume:</strong> <span id="cupResult">—</span></p>
+      <p><strong>Converted Weight:</strong> <span id="gramResult">—</span></p>
+    </div>
   </div>
 
   <script src="script.js"></script>
