@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Ingredient Converter</title>
-  <!-- Cozy font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,10 +11,11 @@
   <div class="container">
     <h1>Ingredient Converter</h1>
 
-    <!-- Ingredient + Unit selectors -->
     <div class="controls">
       <label for="ingredient">Ingredient:</label>
-      <select id="ingredient"></select>
+      <select id="ingredient">
+        <!-- JS will populate -->
+      </select>
 
       <label for="unit">Unit:</label>
       <select id="unit">
@@ -29,7 +29,6 @@
       </select>
     </div>
 
-    <!-- Volume & Weight inputs -->
     <div class="inputs">
       <div>
         <label for="volInput">Volume:</label>
@@ -41,7 +40,6 @@
       </div>
     </div>
 
-    <!-- Two-line result display -->
     <div class="result">
       <div><strong>Volume:</strong> <span id="volResult">—</span></div>
       <div><strong>Weight:</strong> <span id="wtResult">—</span></div>
