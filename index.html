@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ingredient Converter</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Ingredient Converter</h1>
+    <div class="controls">
+      <label for="ingredient">Ingredient:</label>
+      <select id="ingredient"></select>
+
+      <label for="unit">Volume:</label>
+      <select id="unit">
+        <option value="1_cup">1 cup</option>
+        <option value="3_4_cup">¾ cup</option>
+        <option value="2_3_cup">⅔ cup</option>
+        <option value="1_2_cup">½ cup</option>
+        <option value="1_3_cup">⅓ cup</option>
+        <option value="1_4_cup">¼ cup</option>
+        <option value="1_tbsp">1 tbsp</option>
+      </select>
+    </div>
+
+    <div class="result">
+      <p><strong>Weight:</strong> <span id="grams">—</span> grams</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
